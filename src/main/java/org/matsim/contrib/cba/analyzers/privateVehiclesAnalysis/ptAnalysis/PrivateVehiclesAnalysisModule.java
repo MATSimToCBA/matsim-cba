@@ -27,7 +27,7 @@ public class PrivateVehiclesAnalysisModule extends AbstractModule {
                 if(this.getIterationNumber() % cbaConfigGroup.getOutputFrequency() != 0) {
                     return;
                 }
-                addMobsimScopeEventHandlerBinding().toProvider(new Provider<>() {
+                addMobsimScopeEventHandlerBinding().toProvider(new Provider<MobsimScopeEventHandler>() {
                     @Inject
                     CbaAnalysis cbaAnalysis;
 
