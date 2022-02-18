@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.matsim-cba</groupId>
+    <artifactId>matsim-cba</artifactId>
+    <version>1.0</version>
+
+    <properties>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
+        <matsim.version>14.0-PR1512</matsim.version>
+    </properties>
+
+    <repositories>
+        <!-- Repository for MATSim releases (MATSim is not on Maven central) -->
+        <repository>
+            <id>matsim</id>
+            <url>https://repo.matsim.org/repository/matsim</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.matsim</groupId>
+            <artifactId>matsim</artifactId>
+            <version>${matsim.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.matsim.contrib</groupId>
+            <artifactId>drt</artifactId>
+            <version>${matsim.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.matsim.contrib</groupId>
+            <artifactId>common</artifactId>
+            <version>${matsim.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -1,0 +1,94 @@
+package org.matsim.contrib.cba;
+
+import org.matsim.contrib.cba.analyzers.agentsAnalysis.AgentsAnalyzerConfigGroup;
+import org.matsim.contrib.cba.analyzers.drtAnalysis.DrtAnalyzerConfigGroup;
+import org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis.ptAnalysis.PrivateVehiclesAnalyzerConfigGroup;
+import org.matsim.contrib.cba.analyzers.ptAnalysis.PtAnalyzerConfigGroup;
+import org.matsim.core.config.Config;
+import org.matsim.core.config.ConfigGroup;
+import org.matsim.core.config.ReflectiveConfigGroup;
+
+import java.util.Collection;
+
+
+public class CbaConfigGroup extends ReflectiveConfigGroup {
+    public static final String GROUP_NAME = "cba";
+    public static final String OUTPUT_FREQUENCY = "outputFrequency";
+    public static final String OUTPUT_FREQUENCY_EXP = "The frequency at which cba output are generated";
+
+    private int outputFrequency = 1;
+
+    /**
+     * @param outputFrequency -- {@value OUTPUT_FREQUENCY_EXP}
+     */
+    @StringSetter(OUTPUT_FREQUENCY)
+    public void setOutputFrequency(int outputFrequency) {
+        this.outputFrequency = outputFrequency;
+    }
+
+    /**
+     * @return -- {@value OUTPUT_FREQUENCY_EXP}
+     */
+    @StringGetter(OUTPUT_FREQUENCY)
+    public int getOutputFrequency(){
+        return this.outputFrequency;
+    }
+
+    @Override
+    public ConfigGroup createParameterSet(String type) {
+        switch (type) {
+            case DrtAnalyzerConfigGroup.SET_NAME:
+                return new DrtAnalyzerConfigGroup();
+            case PtAnalyzerConfigGroup.SET_NAME:
+                return new PtAnalyzerConfigGroup();
+            case AgentsAnalyzerConfigGroup.SET_NAME:
+                return new AgentsAnalyzerConfigGroup();
+            case PrivateVehiclesAnalyzerConfigGroup.SET_NAME:
+                return new PrivateVehiclesAnalyzerConfigGroup();
+            default:
+                throw new IllegalArgumentException("Unsupported parameter set type: " + type);
+        }
+    }
+
+    @Override
+    public void addParameterSet(ConfigGroup set) {
+        if(set instanceof DrtAnalyzerConfigGroup || set instanceof PtAnalyzerConfigGroup || set instanceof AgentsAnalyzerConfigGroup || set instanceof PrivateVehiclesAnalyzerConfigGroup) {
+            super.addParameterSet(set);
+        } else {
+            throw new IllegalArgumentException("Unsupported parameter set class: " + set);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<DrtAnalyzerConfigGroup> getDrtAnalyzersConfigs() {
+        return (Collection<DrtAnalyzerConfigGroup>) getParameterSets(DrtAnalyzerConfigGroup.SET_NAME);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<PtAnalyzerConfigGroup> getPtAnalyzersConfigs() {
+        return (Collection<PtAnalyzerConfigGroup>) getParameterSets(PtAnalyzerConfigGroup.SET_NAME);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<AgentsAnalyzerConfigGroup> getAgentsAnalyzersConfigs() {
+        return (Collection<AgentsAnalyzerConfigGroup>) getParameterSets(AgentsAnalyzerConfigGroup.SET_NAME);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<PrivateVehiclesAnalyzerConfigGroup> getPrivateVehiclesAnalyzersConfigs() {
+        return (Collection<PrivateVehiclesAnalyzerConfigGroup>) getParameterSets(PrivateVehiclesAnalyzerConfigGroup.SET_NAME);
+    }
+
+    public CbaConfigGroup() {
+        super(GROUP_NAME);
+    }
+
+    public static CbaConfigGroup get(Config config) {
+        return (CbaConfigGroup)config.getModule(GROUP_NAME);
+    }
+
+    @Override
+    protected void checkConsistency(Config config) {
+        super.checkConsistency(config);
+    }
+}
