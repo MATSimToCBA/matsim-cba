@@ -219,7 +219,7 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
                 Id<Vehicle> vehicleId = trips.get(i).segments.get(j).vehicleId;
                 if(vehicleId != null) {
                     cell.setCellValue(trips.get(i).segments.get(j).vehicleId.toString());
-                    ptLineCell.setCellValue(this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId)).getAttributes().getAttribute("gtfs_route_short_name").toString());
+                    putTransitLineInfoInCell(vehicleId, ptLineCell);
                     ptModeCell.setCellValue(this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId)).getRoutes().get(this.vehiclesToTransitRoutes.get(vehicleId)).getTransportMode());
                 }
                 cell = row.createCell(12);
@@ -243,7 +243,7 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
             Cell cell = row.createCell(0);
             cell.setCellValue(vehicleId.toString());
             cell = row.createCell(1);
-            cell.setCellValue(this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId)).getAttributes().getAttribute("gtfs_route_short_name").toString());
+            putTransitLineInfoInCell(vehicleId, cell);
             cell = row.createCell(2);
             cell.setCellValue(this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId)).getRoutes().get(this.vehiclesToTransitRoutes.get(vehicleId)).getTransportMode());
             cell = row.createCell(3);
@@ -254,6 +254,17 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
             cell.setCellValue(this.vehiclesDistances.getOrDefault(vehicleId, 0.0));
             rowCounter++;
 
+        }
+    }
+
+    private void putTransitLineInfoInCell(Id<Vehicle> vehicleId, Cell cell) {
+        TransitLine transitLine = this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId));
+        Object gtfsRouteShortName = transitLine.getAttributes().getAttribute("gtfs_route_short_name");
+        if(gtfsRouteShortName != null) {
+            cell.setCellValue(gtfsRouteShortName.toString());
+        }
+        else {
+            cell.setCellValue(transitLine.getId().toString());
         }
     }
 
