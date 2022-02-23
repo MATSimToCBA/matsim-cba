@@ -3,6 +3,7 @@ package org.matsim.contrib.cba.analyzers.drtAnalysis;
 import org.matsim.core.config.ReflectiveConfigGroup;
 
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 public class DrtAnalyzerConfigGroup extends ReflectiveConfigGroup {
 
@@ -77,5 +78,14 @@ public class DrtAnalyzerConfigGroup extends ReflectiveConfigGroup {
     @StringGetter(VEHICLES_SHEET_NAME)
     public String getVehiclesSheetName() {
         return this.vehiclesSheetName;
+    }
+
+    @Override
+    public Map<String, String> getComments() {
+        Map<String, String> comments = super.getComments();
+        comments.put(MODE, MODE_EXP);
+        comments.put(TRIPS_SHEET_NAME, TRIPS_SHEET_NAME_EXP);
+        comments.put(VEHICLES_SHEET_NAME, VEHICLES_SHEET_NAME_EXP);
+        return comments;
     }
 }

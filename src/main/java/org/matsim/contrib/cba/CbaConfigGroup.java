@@ -9,6 +9,7 @@ import org.matsim.core.config.ConfigGroup;
 import org.matsim.core.config.ReflectiveConfigGroup;
 
 import java.util.Collection;
+import java.util.Map;
 
 
 public class CbaConfigGroup extends ReflectiveConfigGroup {
@@ -90,5 +91,12 @@ public class CbaConfigGroup extends ReflectiveConfigGroup {
     @Override
     protected void checkConsistency(Config config) {
         super.checkConsistency(config);
+    }
+
+    @Override
+    public Map<String, String> getComments() {
+        Map<String, String> comments = super.getComments();
+        comments.put(OUTPUT_FREQUENCY, OUTPUT_FREQUENCY_EXP);
+        return comments;
     }
 }

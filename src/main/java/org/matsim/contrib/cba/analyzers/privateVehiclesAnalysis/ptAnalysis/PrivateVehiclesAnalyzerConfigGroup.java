@@ -5,6 +5,7 @@ import org.matsim.core.config.ReflectiveConfigGroup;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PrivateVehiclesAnalyzerConfigGroup extends ReflectiveConfigGroup {
 
@@ -89,5 +90,14 @@ public class PrivateVehiclesAnalyzerConfigGroup extends ReflectiveConfigGroup {
 
     public List<String> getIgnoredActivityTypes() {
         return new ArrayList<>(this.ignoredActivityTypes);
+    }
+
+    @Override
+    public Map<String, String> getComments() {
+        Map<String, String> comments = super.getComments();
+        comments.put(MODES, MODES_EXP);
+        comments.put(TRIPS_SHEET_NAME, TRIPS_SHEET_NAME_EXP);
+        comments.put(IGNORED_ACTIVITY_TYPES, IGNORED_ACTIVITY_TYPES_EXP);
+        return comments;
     }
 }

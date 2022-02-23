@@ -3,6 +3,7 @@ package org.matsim.contrib.cba.analyzers.agentsAnalysis;
 import org.matsim.core.config.ReflectiveConfigGroup;
 
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 public class AgentsAnalyzerConfigGroup extends ReflectiveConfigGroup {
 
@@ -32,5 +33,12 @@ public class AgentsAnalyzerConfigGroup extends ReflectiveConfigGroup {
     @StringGetter(SCORES_SHEET_NAME)
     public String getScoresSheetName() {
         return this.scoresSheetName;
+    }
+
+    @Override
+    public Map<String, String> getComments() {
+        Map<String, String> comments = super.getComments();
+        comments.put(SCORES_SHEET_NAME, SCORES_SHEET_NAME_EXP);
+        return comments;
     }
 }

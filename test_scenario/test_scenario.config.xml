@@ -5,19 +5,20 @@
     <module name="cba">
         <parameterset type="drtAnalyzer">
             <param name="mode" value="drt"/>
-            <param name="tripsSheetName" value="Trips_drt_S1" />
-            <param name="vehiclesSheetName" value="Vehicles_drt_S1" />
+            <param name="tripsSheetName" value="Trips_drt" />
+            <param name="vehiclesSheetName" value="Vehicles_drt" />
         </parameterset>
         <parameterset type="ptAnalyzer">
             <param name="mode" value="pt" />
-            <param name="tripsSheetName" value="Trips_pt_S1"/>
+            <param name="tripsSheetName" value="Trips_pt"/>
+            <param name="vehiclesSheetName" value="Vehicles_pt"/>
         </parameterset>
         <parameterset type="agentsAnalyzer">
-            <param name="scoresSheetName" value="scores_S1"/>
+            <param name="scoresSheetName" value="scores"/>
         </parameterset>
         <parameterset type="privateVehiclesAnalyzer">
             <param name="modes" value="car" />
-            <param name="tripsSheetName" value="Trips_PV_S1"/>
+            <param name="tripsSheetName" value="Trips_pv"/>
             <param name="ignoredActivityTypes" value="DrtStay,DrtBusStop" />
         </parameterset>
     </module>
@@ -37,8 +38,9 @@
 
     <module name="controler">
         <param name="outputDirectory" value="output/test_scenario" />
+        <param name="overwriteFiles" value="overwriteExistingFiles" />
         <param name="firstIteration" value="0" />
-        <param name="lastIteration" value="1" />
+        <param name="lastIteration" value="2" />
         <param name="mobsim" value="qsim" />
     </module>
 

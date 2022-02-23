@@ -63,7 +63,7 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
     public PtAnalyzer(PtAnalyzerConfigGroup configGroup, Network network, Scenario scenario) {
         this.configGroup = configGroup;
         this.network = network;
-        this.sheetsNames = new String[]{configGroup.getTripsSheetName(), "PtVehicles"};
+        this.sheetsNames = new String[]{configGroup.getTripsSheetName(), configGroup.getVehiclesSheetName()};
         this.scenario = scenario;
     }
 
