@@ -208,7 +208,7 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
                 cell = row.createCell(5);
                 cell.setCellValue(trips.get(i).getEgressTime());
                 cell = row.createCell(6);
-                cell.setCellValue(trips.get(4).getTransferTime());
+                cell.setCellValue(trips.get(i).getTransferTime());
                 cell = row.createCell(7);
                 cell.setCellValue(j);
                 cell = row.createCell(8);
