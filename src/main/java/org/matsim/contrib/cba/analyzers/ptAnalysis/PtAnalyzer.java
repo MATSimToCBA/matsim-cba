@@ -38,7 +38,7 @@ TODO Distances:
 //TODO Follow VehicleEntersLink & VehicleLeavesLink events to compute the travelled distance
 public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEventHandler, ActivityEndEventHandler, ActivityStartEventHandler, PersonEntersVehicleEventHandler, PersonLeavesVehicleEventHandler, LinkEnterEventHandler, LinkLeaveEventHandler, TeleportationArrivalEventHandler, TransitDriverStartsEventHandler, VehicleEntersTrafficEventHandler, VehicleLeavesTrafficEventHandler, MobsimScopeEventHandler, CbaAnalyzer {
 
-    private static final String[] TRIPS_HEADERS = new String[]{"personID", "purpose", "inVehicleTime", "totalWaitingTime", "accessTime", "egressTime", "transferTime", "segmentIndex", "mode", "vehicleId", "pt_line", "pt_mode", "waitingTime", "travelDuration", "travelDistance"};
+    private static final String[] TRIPS_HEADERS = new String[]{"personID", "purpose", "inVehicleTime", "totalWaitingTime", "accessTime", "egressTime", "transferTime", "segmentIndex", "mode", "vehicleId", "pt_line", "pt_mode", "segmentAccessTime", "segmentEgressTime", "waitingTime", "travelDuration", "travelDistance"};
     private static final String[] VEHICLES_HEADERS = new String[]{"vehicleID", "lineID", "mode", "departureTime", "arrivalTime", "totalDistance"};
 
     private final Map<Id<Vehicle>, String> vehiclesToModes = new HashMap<>();
@@ -194,7 +194,7 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
             for (int j=0; j< trips.get(i).segments.size(); j++) {
                 row = tripsSheet.createRow(rowCounter);
                 rowCounter++;
-                //"personID", "purpose", "inVehicleTime", "totalWaitingTime", "accessTime", "egressTime", "transferTime", "segmentIndex", "mode", "vehicleId", "pt_line", "pt_mode", "waitingTime", "travelDuration", "travelDistance"
+                //"personID", "purpose", "inVehicleTime", "totalWaitingTime", "accessTime", "egressTime", "transferTime", "segmentIndex", "mode", "vehicleId", "pt_line", "pt_mode", "segmentAccessTime", "segmentEgressTime", "waitingTime", "travelDuration", "travelDistance"
                 Cell cell = row.createCell(0);
                 cell.setCellValue(trips.get(i).personId.toString());
                 cell = row.createCell(1);
@@ -223,10 +223,14 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
                     ptModeCell.setCellValue(this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId)).getRoutes().get(this.vehiclesToTransitRoutes.get(vehicleId)).getTransportMode());
                 }
                 cell = row.createCell(12);
-                cell.setCellValue(trips.get(i).segments.get(j).waitingTime);
+                cell.setCellValue(trips.get(i).getSegmentAccessTime(j));
                 cell = row.createCell(13);
-                cell.setCellValue(trips.get(i).segments.get(j).travelTime);
+                cell.setCellValue(trips.get(i).getSegmentEgressTime(j));
                 cell = row.createCell(14);
+                cell.setCellValue(trips.get(i).segments.get(j).waitingTime);
+                cell = row.createCell(15);
+                cell.setCellValue(trips.get(i).segments.get(j).travelTime);
+                cell = row.createCell(16);
                 cell.setCellValue(trips.get(i).segments.get(j).distance);
             }
         }

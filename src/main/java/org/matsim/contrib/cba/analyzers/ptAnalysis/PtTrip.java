@@ -89,4 +89,18 @@ final class PtTrip {
         }
         return result;
     }
+
+    public double getSegmentAccessTime(int segmentIndex) {
+        if(segmentIndex > 0 && this.segments.get(segmentIndex-1).mode.equals("walk")) {
+            return this.segments.get(segmentIndex-1).travelTime;
+        }
+        return 0;
+    }
+
+    public double getSegmentEgressTime(int segmentIndex) {
+        if(segmentIndex < this.segments.size()-1 && this.segments.get(segmentIndex+1).mode.equals("walk")) {
+            return this.segments.get(segmentIndex+1).travelTime;
+        }
+        return 0;
+    }
 }
