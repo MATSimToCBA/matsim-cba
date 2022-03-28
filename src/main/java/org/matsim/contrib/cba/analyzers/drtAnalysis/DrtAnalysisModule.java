@@ -5,9 +5,12 @@ import org.matsim.contrib.cba.CbaAnalysis;
 import org.matsim.contrib.cba.CbaConfigGroup;
 import org.matsim.contrib.drt.run.DrtConfigGroup;
 import org.matsim.contrib.drt.run.MultiModeDrtConfigGroup;
+import org.matsim.contrib.drt.speedup.DrtSpeedUp;
+import org.matsim.contrib.drt.speedup.DrtSpeedUpParams;
 import org.matsim.contrib.dvrp.fleet.Fleet;
 import org.matsim.contrib.dvrp.run.AbstractDvrpModeModule;
 import org.matsim.contrib.dvrp.run.AbstractDvrpModeQSimModule;
+import org.matsim.core.config.groups.ControlerConfigGroup;
 
 
 public class DrtAnalysisModule extends AbstractDvrpModeModule {
@@ -23,10 +26,20 @@ public class DrtAnalysisModule extends AbstractDvrpModeModule {
 
     @Override
     public void install() {
+        DrtSpeedUpParams drtSpeedUpParams = null;
+        for(DrtConfigGroup drtConfigGroup : ((MultiModeDrtConfigGroup) getConfig().getModules().get(MultiModeDrtConfigGroup.GROUP_NAME)).getModalElements()) {
+            if(drtConfigGroup.getMode().equals(this.configGroup.getMode())) {
+                drtSpeedUpParams = drtConfigGroup.getDrtSpeedUpParams().orElse(null);
+            }
+        }
+        DrtSpeedUpParams finalDrtSpeedUpParams = drtSpeedUpParams;
         installQSimModule(new AbstractDvrpModeQSimModule(this.getMode()) {
             @Override
             protected void configureQSim() {
                 if(this.getIterationNumber() % cbaConfigGroup.getOutputFrequency() != 0) {
+                    return;
+                }
+                if(finalDrtSpeedUpParams != null && DrtSpeedUp.isTeleportDrtUsers(finalDrtSpeedUpParams, (ControlerConfigGroup) getConfig().getModules().get(ControlerConfigGroup.GROUP_NAME), this.getIterationNumber())) {
                     return;
                 }
                 addMobsimScopeEventHandlerBinding().toProvider(modalProvider(getter -> {
