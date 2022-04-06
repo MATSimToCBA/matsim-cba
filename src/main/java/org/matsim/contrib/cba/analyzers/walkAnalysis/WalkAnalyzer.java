@@ -18,7 +18,7 @@ public class WalkAnalyzer implements PersonDepartureEventHandler, PersonArrivalE
 
     private static final String[] TRIPS_HEADERS = new String[]{"personID", "purpose", "travelDuration", "travelDistance"};
 
-    private static final String MODE = "WALK";
+    private static final String MODE = "walk";
 
     private final Map<Id<Person>, PersonArrivalEvent> agentArrivals = new HashMap<>();
     private final Map<Id<Person>, WalkTrip> currentTrips = new HashMap<>();
@@ -46,12 +46,16 @@ public class WalkAnalyzer implements PersonDepartureEventHandler, PersonArrivalE
 
     @Override
     public void handleEvent(PersonDepartureEvent event) {
+        WalkTrip trip = currentTrips.getOrDefault(event.getPersonId(), null);
+        if(trip == null) {
+            return;
+        }
         if(!event.getLegMode().equals(MODE)) {
             currentTrips.remove(event.getPersonId());
         }
         else
         {
-            currentTrips.get(event.getPersonId()).departureEvent = event;
+            trip.departureEvent = event;
         }
     }
 
