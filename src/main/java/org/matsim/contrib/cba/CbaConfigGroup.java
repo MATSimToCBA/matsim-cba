@@ -4,6 +4,7 @@ import org.matsim.contrib.cba.analyzers.agentsAnalysis.AgentsAnalyzerConfigGroup
 import org.matsim.contrib.cba.analyzers.drtAnalysis.DrtAnalyzerConfigGroup;
 import org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis.PrivateVehiclesAnalyzerConfigGroup;
 import org.matsim.contrib.cba.analyzers.ptAnalysis.PtAnalyzerConfigGroup;
+import org.matsim.contrib.cba.analyzers.walkAnalysis.WalkAnalyzerConfigGroup;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;
 import org.matsim.core.config.ReflectiveConfigGroup;
@@ -46,6 +47,8 @@ public class CbaConfigGroup extends ReflectiveConfigGroup {
                 return new AgentsAnalyzerConfigGroup();
             case PrivateVehiclesAnalyzerConfigGroup.SET_NAME:
                 return new PrivateVehiclesAnalyzerConfigGroup();
+            case WalkAnalyzerConfigGroup.SET_NAME:
+                return new WalkAnalyzerConfigGroup();
             default:
                 throw new IllegalArgumentException("Unsupported parameter set type: " + type);
         }
@@ -53,7 +56,7 @@ public class CbaConfigGroup extends ReflectiveConfigGroup {
 
     @Override
     public void addParameterSet(ConfigGroup set) {
-        if(set instanceof DrtAnalyzerConfigGroup || set instanceof PtAnalyzerConfigGroup || set instanceof AgentsAnalyzerConfigGroup || set instanceof PrivateVehiclesAnalyzerConfigGroup) {
+        if(set instanceof DrtAnalyzerConfigGroup || set instanceof PtAnalyzerConfigGroup || set instanceof AgentsAnalyzerConfigGroup || set instanceof PrivateVehiclesAnalyzerConfigGroup || set instanceof WalkAnalyzerConfigGroup) {
             super.addParameterSet(set);
         } else {
             throw new IllegalArgumentException("Unsupported parameter set class: " + set);
@@ -78,6 +81,11 @@ public class CbaConfigGroup extends ReflectiveConfigGroup {
     @SuppressWarnings("unchecked")
     public Collection<PrivateVehiclesAnalyzerConfigGroup> getPrivateVehiclesAnalyzersConfigs() {
         return (Collection<PrivateVehiclesAnalyzerConfigGroup>) getParameterSets(PrivateVehiclesAnalyzerConfigGroup.SET_NAME);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection<WalkAnalyzerConfigGroup> getWalkAnalyzersConfigs() {
+        return (Collection<WalkAnalyzerConfigGroup>) getParameterSets(WalkAnalyzerConfigGroup.SET_NAME);
     }
 
     public CbaConfigGroup() {
