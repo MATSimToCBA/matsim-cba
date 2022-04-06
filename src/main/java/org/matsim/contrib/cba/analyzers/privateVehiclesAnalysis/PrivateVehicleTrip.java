@@ -1,4 +1,4 @@
-package org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis.ptAnalysis;
+package org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis;
 
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.events.ActivityEndEvent;

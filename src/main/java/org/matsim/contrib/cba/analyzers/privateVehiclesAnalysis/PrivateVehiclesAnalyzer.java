@@ -1,4 +1,4 @@
-package org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis.ptAnalysis;
+package org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;

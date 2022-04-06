@@ -2,7 +2,7 @@ package org.matsim.contrib.cba;
 
 import org.matsim.contrib.cba.analyzers.agentsAnalysis.AgentsAnalyzerConfigGroup;
 import org.matsim.contrib.cba.analyzers.drtAnalysis.DrtAnalyzerConfigGroup;
-import org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis.ptAnalysis.PrivateVehiclesAnalyzerConfigGroup;
+import org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis.PrivateVehiclesAnalyzerConfigGroup;
 import org.matsim.contrib.cba.analyzers.ptAnalysis.PtAnalyzerConfigGroup;
 import org.matsim.core.config.Config;
 import org.matsim.core.config.ConfigGroup;

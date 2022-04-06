@@ -1,4 +1,4 @@
-package org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis.ptAnalysis;
+package org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis;
 
 import org.matsim.core.config.ReflectiveConfigGroup;
 
