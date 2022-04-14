@@ -1,22 +1,27 @@
-package org.matsim.contrib.cba.analyzers.walkAnalysis;
+package org.matsim.contrib.cba.analyzers.genericAnalysis;
 
 import org.matsim.core.config.ReflectiveConfigGroup;
 
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
-public class WalkAnalyzerConfigGroup extends ReflectiveConfigGroup {
+public class GenericAnalyzerConfigGroup extends ReflectiveConfigGroup {
 
-    public static final String SET_NAME = "walkAnalyzer";
+    public static final String SET_NAME = "genericAnalyzer";
 
     public static final String TRIPS_SHEET_NAME = "tripsSheetName";
     public static final String TRIPS_SHEET_NAME_EXP = "The name of the sheet that will contain the trips information";
 
+    public static final String MODE = "mode";
+    public static final String MODE_EXP = "The mode that will be analyzed by the generic analyzer";
+
     @NotNull
     private String tripsSheetName;
 
+    @NotNull
+    private String mode;
 
-    public WalkAnalyzerConfigGroup() {
+    public GenericAnalyzerConfigGroup() {
         super(SET_NAME);
     }
 
@@ -34,6 +39,22 @@ public class WalkAnalyzerConfigGroup extends ReflectiveConfigGroup {
     @StringGetter(TRIPS_SHEET_NAME)
     public String getTripsSheetName() {
         return this.tripsSheetName;
+    }
+
+    /**
+     * @param mode -- {@value MODE_EXP}
+     */
+    @StringSetter(MODE)
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
+
+    /**
+     * @return -- {@value TRIPS_SHEET_NAME_EXP}
+     */
+    @StringGetter(MODE)
+    public String getMode() {
+        return this.mode;
     }
 
     @Override

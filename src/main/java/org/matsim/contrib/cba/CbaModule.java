@@ -11,8 +11,8 @@ import org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis.PrivateVehiclesA
 import org.matsim.contrib.cba.analyzers.privateVehiclesAnalysis.PrivateVehiclesAnalyzerConfigGroup;
 import org.matsim.contrib.cba.analyzers.ptAnalysis.PtAnalysisModule;
 import org.matsim.contrib.cba.analyzers.ptAnalysis.PtAnalyzerConfigGroup;
-import org.matsim.contrib.cba.analyzers.walkAnalysis.WalkAnalysisModule;
-import org.matsim.contrib.cba.analyzers.walkAnalysis.WalkAnalyzerConfigGroup;
+import org.matsim.contrib.cba.analyzers.genericAnalysis.GenericAnalysisModule;
+import org.matsim.contrib.cba.analyzers.genericAnalysis.GenericAnalyzerConfigGroup;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.MatsimServices;
 
@@ -64,8 +64,8 @@ public class CbaModule extends AbstractModule {
             install(new PrivateVehiclesAnalysisModule(privateVehiclesAnalyzerConfigGroup, configGroup));
         }
 
-        for(WalkAnalyzerConfigGroup walkAnalyzerConfigGroup : configGroup.getWalkAnalyzersConfigs()) {
-            install(new WalkAnalysisModule(walkAnalyzerConfigGroup, configGroup));
+        for(GenericAnalyzerConfigGroup genericAnalyzerConfigGroup : configGroup.getWalkAnalyzersConfigs()) {
+            install(new GenericAnalysisModule(genericAnalyzerConfigGroup, configGroup));
         }
     }
 }

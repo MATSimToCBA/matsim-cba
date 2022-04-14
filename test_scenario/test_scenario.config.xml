@@ -21,8 +21,9 @@
             <param name="tripsSheetName" value="Trips_pv"/>
             <param name="ignoredActivityTypes" value="DrtStay,DrtBusStop" />
         </parameterset>
-        <parameterset type="walkAnalyzer">
+        <parameterset type="genericAnalyzer">
             <param name="tripsSheetName" value="Trips_walk"/>
+            <param name="mode" value="walk" />
         </parameterset>
     </module>
 

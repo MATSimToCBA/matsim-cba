@@ -1,4 +1,4 @@
-package org.matsim.contrib.cba.analyzers.walkAnalysis;
+package org.matsim.contrib.cba.analyzers.genericAnalysis;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -8,12 +8,12 @@ import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.events.MobsimScopeEventHandler;
 import org.matsim.core.mobsim.qsim.AbstractQSimModule;
 
-public class WalkAnalysisModule extends AbstractModule {
+public class GenericAnalysisModule extends AbstractModule {
 
-    private final WalkAnalyzerConfigGroup configGroup;
+    private final GenericAnalyzerConfigGroup configGroup;
     private final CbaConfigGroup cbaConfigGroup;
 
-    public WalkAnalysisModule(WalkAnalyzerConfigGroup configGroup, CbaConfigGroup cbaConfigGroup) {
+    public GenericAnalysisModule(GenericAnalyzerConfigGroup configGroup, CbaConfigGroup cbaConfigGroup) {
         this.configGroup = configGroup;
         this.cbaConfigGroup = cbaConfigGroup;
     }
@@ -32,9 +32,9 @@ public class WalkAnalysisModule extends AbstractModule {
 
                     @Override
                     public MobsimScopeEventHandler get() {
-                        WalkAnalyzer walkAnalyzer = new WalkAnalyzer(configGroup);
-                        cbaAnalysis.addSingleIterationAnalyzer(walkAnalyzer);
-                        return walkAnalyzer;
+                        GenericAnalyzer genericAnalyzer = new GenericAnalyzer(configGroup);
+                        cbaAnalysis.addSingleIterationAnalyzer(genericAnalyzer);
+                        return genericAnalyzer;
                     }
                 });
             }
