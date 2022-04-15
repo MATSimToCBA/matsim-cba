@@ -56,12 +56,24 @@ public class RideTrip {
         return this.teleportationArrivalEvents.get(0).getTime() - this.personDepartureEvents.get(0).getTime();
     }
 
+    public double getAccessDistance() {
+        return this.teleportationArrivalEvents.get(0).getDistance();
+    }
+
     public double getEgressTime() {
         return this.teleportationArrivalEvents.get(2).getTime() - this.personDepartureEvents.get(2).getTime();
     }
 
+    public double getEgressDistance() {
+        return this.teleportationArrivalEvents.get(2).getDistance();
+    }
+
     public double getRideTime() {
         return this.teleportationArrivalEvents.get(1).getTime() - this.personDepartureEvents.get(1).getTime();
+    }
+
+    public double getRideDistance() {
+        return this.teleportationArrivalEvents.get(1).getDistance();
     }
 
     public double getDepartureTime() {

@@ -30,7 +30,7 @@ public class RideAnalyzer implements ActivityEndEventHandler, PersonDepartureEve
     private final Map<Id<Person>, RideTrip> currentTrips = new HashMap<>();
     private final List<RideTrip> trips = new ArrayList<>();
     private final String[] sheetsNames = new String[1];
-    private static final String[] TRIPS_HEADERS = new String[]{"personId", "purpose", "departureTime", "arrivalTime", "accessTime", "egressTime", "rideTime"};
+    private static final String[] TRIPS_HEADERS = new String[]{"personId", "purpose", "departureTime", "arrivalTime", "accessTime", "egressTime", "rideTime", "accessDistance", "egressDistance", "rideDistance"};
 
     public RideAnalyzer(RideAnalyzerConfigGroup configGroup) {
         this.configGroup = configGroup;
@@ -111,7 +111,7 @@ public class RideAnalyzer implements ActivityEndEventHandler, PersonDepartureEve
         }
         int rowCounter = 1;
         for(int i=0; i<trips.size(); i++) {
-            //"personId", "purpose", "departureTime", "arrivalTime", "accessTime", "egressTime", "rideTime"
+            //"personId", "purpose", "departureTime", "arrivalTime", "accessTime", "egressTime", "rideTime", "accessDistance", "egressDistance", "rideDistance"
             row = tripsSheet.createRow(rowCounter);
             rowCounter++;
             Cell cell = row.createCell(0);
@@ -128,6 +128,12 @@ public class RideAnalyzer implements ActivityEndEventHandler, PersonDepartureEve
             cell.setCellValue(trips.get(i).getEgressTime());
             cell = row.createCell(6);
             cell.setCellValue(trips.get(i).getRideTime());
+            cell = row.createCell(7);
+            cell.setCellValue(trips.get(i).getAccessDistance());
+            cell = row.createCell(8);
+            cell.setCellValue(trips.get(i).getEgressDistance());
+            cell = row.createCell(9);
+            cell.setCellValue(trips.get(i).getRideDistance());
         }
     }
 }
