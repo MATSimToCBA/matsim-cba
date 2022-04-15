@@ -13,6 +13,8 @@ import org.matsim.contrib.cba.analyzers.ptAnalysis.PtAnalysisModule;
 import org.matsim.contrib.cba.analyzers.ptAnalysis.PtAnalyzerConfigGroup;
 import org.matsim.contrib.cba.analyzers.genericAnalysis.GenericAnalysisModule;
 import org.matsim.contrib.cba.analyzers.genericAnalysis.GenericAnalyzerConfigGroup;
+import org.matsim.contrib.cba.analyzers.rideAnalysis.RideAnalysisModule;
+import org.matsim.contrib.cba.analyzers.rideAnalysis.RideAnalyzerConfigGroup;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.MatsimServices;
 
@@ -66,6 +68,10 @@ public class CbaModule extends AbstractModule {
 
         for(GenericAnalyzerConfigGroup genericAnalyzerConfigGroup : configGroup.getWalkAnalyzersConfigs()) {
             install(new GenericAnalysisModule(genericAnalyzerConfigGroup, configGroup));
+        }
+
+        for(RideAnalyzerConfigGroup rideAnalyzerConfigGroup : configGroup.getRideAnalyzersConfigs()) {
+            install(new RideAnalysisModule(rideAnalyzerConfigGroup, configGroup));
         }
     }
 }

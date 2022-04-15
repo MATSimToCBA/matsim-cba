@@ -25,6 +25,9 @@
             <param name="tripsSheetName" value="Trips_walk"/>
             <param name="mode" value="walk" />
         </parameterset>
+        <parameterset type="rideAnalyzer">
+            <param name="tripsSheetName" value="Trips_ride"/>
+        </parameterset>
     </module>
 
     <module name="global">
