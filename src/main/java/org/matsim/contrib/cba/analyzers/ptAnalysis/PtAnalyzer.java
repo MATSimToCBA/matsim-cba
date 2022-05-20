@@ -251,9 +251,13 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
             cell = row.createCell(2);
             cell.setCellValue(this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId)).getRoutes().get(this.vehiclesToTransitRoutes.get(vehicleId)).getTransportMode());
             cell = row.createCell(3);
-            cell.setCellValue(this.vehiclesToDepartureTimes.get(vehicleId));
+            if(this.vehiclesToDepartureTimes.containsKey(vehicleId)) {
+                cell.setCellValue(this.vehiclesToDepartureTimes.get(vehicleId));
+            }
             cell = row.createCell(4);
-            cell.setCellValue(this.vehiclesToArrivalTimes.get(vehicleId));
+            if(this.vehiclesToArrivalTimes.containsKey(vehicleId)) {
+                cell.setCellValue(this.vehiclesToArrivalTimes.get(vehicleId));
+            }
             cell = row.createCell(5);
             cell.setCellValue(this.vehiclesDistances.getOrDefault(vehicleId, 0.0));
             rowCounter++;
