@@ -14,6 +14,7 @@ import org.matsim.contrib.cba.utils.Tuple;
 import org.matsim.core.api.experimental.events.TeleportationArrivalEvent;
 import org.matsim.core.api.experimental.events.handler.TeleportationArrivalEventHandler;
 import org.matsim.core.events.MobsimScopeEventHandler;
+import org.matsim.pt.transitSchedule.api.Departure;
 import org.matsim.pt.transitSchedule.api.TransitLine;
 import org.matsim.pt.transitSchedule.api.TransitRoute;
 import org.matsim.vehicles.Vehicle;
@@ -65,6 +66,15 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
         this.network = network;
         this.sheetsNames = new String[]{configGroup.getTripsSheetName(), configGroup.getVehiclesSheetName()};
         this.scenario = scenario;
+
+        for(TransitLine transitLine : this.scenario.getTransitSchedule().getTransitLines().values()) {
+            for(TransitRoute transitRoute: transitLine.getRoutes().values()) {
+                for(Departure departure: transitRoute.getDepartures().values()) {
+                    this.vehiclesToTransitLines.put(departure.getVehicleId(), transitLine.getId());
+                    this.vehiclesToTransitRoutes.put(departure.getVehicleId(), transitRoute.getId());
+                }
+            }
+        }
     }
 
 
