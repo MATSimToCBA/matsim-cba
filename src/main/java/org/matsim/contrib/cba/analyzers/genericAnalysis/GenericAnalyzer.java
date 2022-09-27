@@ -16,7 +16,7 @@ import java.util.*;
 
 public class GenericAnalyzer implements PersonDepartureEventHandler, PersonArrivalEventHandler, ActivityEndEventHandler, ActivityStartEventHandler, TeleportationArrivalEventHandler, MobsimScopeEventHandler, CbaAnalyzer {
 
-    private static final String[] TRIPS_HEADERS = new String[]{"personID", "purpose", "travelDuration", "travelDistance"};
+    private static final String[] TRIPS_HEADERS = new String[]{"personID", "purpose", "travelDuration", "travelDistance", "departureTime", "arrivalTime"};
 
     private final Map<Id<Person>, PersonArrivalEvent> agentArrivals = new HashMap<>();
     private final Map<Id<Person>, GenericTrip> currentTrips = new HashMap<>();
@@ -117,6 +117,10 @@ public class GenericAnalyzer implements PersonDepartureEventHandler, PersonArriv
             cell.setCellValue(trips.get(i).teleportationArrivalEvent.getTime() - trips.get(i).departureEvent.getTime());
             cell = row.createCell(3);
             cell.setCellValue(trips.get(i).teleportationArrivalEvent.getDistance());
+            cell = row.createCell(4);
+            cell.setCellValue(trips.get(i).departureEvent.getTime());
+            cell = row.createCell(5);
+            cell.setCellValue(trips.get(i).nextActivityStart.getTime());
         }
     }
 
