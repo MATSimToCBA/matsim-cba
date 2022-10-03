@@ -235,7 +235,7 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
                     putTransitLineInfoInCell(vehicleId, ptLineCell);
                     ptModeCell.setCellValue(this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId)).getRoutes().get(this.vehiclesToTransitRoutes.get(vehicleId)).getTransportMode());
                 } else if (trips.get(i).segments.get(j).transitRouteId != null) {
-                    writePtLineAndModeFromRouteId(trips.get(i).segments.get(j).transitRouteId, this.scenario.getTransitSchedule(), ptLineCell, ptModeCell);
+                    writePtInfoFromTransitRoute(trips.get(i).segments.get(j).transitRouteId, this.scenario.getTransitSchedule(), ptLineCell, ptModeCell, cell, trips.get(i).segments.get(j).vehicleDepartureTime);
                 }
                 cell = row.createCell(12);
                 cell.setCellValue(trips.get(i).getSegmentAccessTime(j));
@@ -280,10 +280,16 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
         }
     }
 
-    public void writePtLineAndModeFromRouteId(Id<TransitRoute> routeId, TransitSchedule schedule, Cell ptLineCell, Cell ptModeCell) {
+    public void writePtInfoFromTransitRoute(Id<TransitRoute> routeId, TransitSchedule schedule, Cell ptLineCell, Cell ptModeCell, Cell vehicleIdCell, Double departureTime) {
         for(TransitLine transitLine: schedule.getTransitLines().values()) {
             for(TransitRoute transitRoute : transitLine.getRoutes().values()){
                 if(transitRoute.getId().equals(routeId)) {
+                    for(Departure departure: transitRoute.getDepartures().values()) {
+                        if(departure.getDepartureTime() == departureTime) {
+                            vehicleIdCell.setCellValue(departure.getVehicleId().toString());
+                            break;
+                        }
+                    }
                     ptLineCell.setCellValue(transitLine.getId().toString());
                     ptModeCell.setCellValue(transitRoute.getTransportMode());
                     return;

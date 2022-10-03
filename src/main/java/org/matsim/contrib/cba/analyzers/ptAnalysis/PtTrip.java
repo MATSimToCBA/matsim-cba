@@ -16,6 +16,7 @@ final class PtTrip {
         double travelTime;
         double distance;
         Id<TransitRoute> transitRouteId;
+        double vehicleDepartureTime=-1;
         final String mode;
         final double waitingTime;
 
