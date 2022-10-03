@@ -274,9 +274,24 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
                 cell.setCellValue(this.vehiclesToArrivalTimes.get(vehicleId));
             }
             cell = row.createCell(5);
-            cell.setCellValue(this.vehiclesDistances.getOrDefault(vehicleId, 0.0));
+            if(this.vehiclesDistances.containsKey(vehicleId)){
+                cell.setCellValue(this.vehiclesDistances.getOrDefault(vehicleId, 0.0));
+            } else {
+                putVehicleDistanceFromSchedule(vehicleId, this.scenario.getTransitSchedule(), cell);
+            }
             rowCounter++;
+        }
+    }
 
+    private void putVehicleDistanceFromSchedule(Id<Vehicle> vehicleId, TransitSchedule schedule, Cell cell) {
+        for(TransitLine transitLine : schedule.getTransitLines().values()) {
+            for(TransitRoute transitRoute : transitLine.getRoutes().values()) {
+                for(Departure departure : transitRoute.getDepartures().values()) {
+                    if(vehicleId.equals(departure.getVehicleId())) {
+                        cell.setCellValue(transitRoute.getRoute().getDistance());
+                    }
+                }
+            }
         }
     }
 
@@ -345,6 +360,7 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
         PtTrip.TripSegment segment = this.currentPtTrips.get(personId).getLastSegment();
         if(segment != null) {
             segment.transitRouteId = Id.create(genericEvent.getAttributes().get("route"), TransitRoute.class);
+            segment.vehicleDepartureTime = Double.parseDouble(genericEvent.getAttributes().get("vehicleDepartureTime"));
         }
     }
 }
