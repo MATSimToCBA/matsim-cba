@@ -17,6 +17,7 @@ import org.matsim.core.events.MobsimScopeEventHandler;
 import org.matsim.pt.transitSchedule.api.Departure;
 import org.matsim.pt.transitSchedule.api.TransitLine;
 import org.matsim.pt.transitSchedule.api.TransitRoute;
+import org.matsim.pt.transitSchedule.api.TransitSchedule;
 import org.matsim.vehicles.Vehicle;
 
 import java.util.*;
@@ -37,7 +38,7 @@ TODO Distances:
 
 //TODO replace Map<Id... with IdMap
 //TODO Follow VehicleEntersLink & VehicleLeavesLink events to compute the travelled distance
-public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEventHandler, ActivityEndEventHandler, ActivityStartEventHandler, PersonEntersVehicleEventHandler, PersonLeavesVehicleEventHandler, LinkEnterEventHandler, LinkLeaveEventHandler, TeleportationArrivalEventHandler, TransitDriverStartsEventHandler, VehicleEntersTrafficEventHandler, VehicleLeavesTrafficEventHandler, MobsimScopeEventHandler, CbaAnalyzer {
+public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEventHandler, ActivityEndEventHandler, ActivityStartEventHandler, PersonEntersVehicleEventHandler, PersonLeavesVehicleEventHandler, LinkEnterEventHandler, LinkLeaveEventHandler, TeleportationArrivalEventHandler, TransitDriverStartsEventHandler, VehicleEntersTrafficEventHandler, VehicleLeavesTrafficEventHandler, MobsimScopeEventHandler, GenericEventHandler, CbaAnalyzer {
 
     private static final String[] TRIPS_HEADERS = new String[]{"personID", "purpose", "inVehicleTime", "totalWaitingTime", "accessTime", "egressTime", "transferTime", "segmentIndex", "mode", "vehicleId", "pt_line", "pt_mode", "segmentAccessTime", "segmentEgressTime", "waitingTime", "travelDuration", "travelDistance"};
     private static final String[] VEHICLES_HEADERS = new String[]{"vehicleID", "lineID", "mode", "departureTime", "arrivalTime", "totalDistance"};
@@ -157,6 +158,8 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
         }
     }
 
+
+
     @Override
     public void handleEvent(LinkEnterEvent event) {
 
@@ -231,6 +234,8 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
                     cell.setCellValue(trips.get(i).segments.get(j).vehicleId.toString());
                     putTransitLineInfoInCell(vehicleId, ptLineCell);
                     ptModeCell.setCellValue(this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId)).getRoutes().get(this.vehiclesToTransitRoutes.get(vehicleId)).getTransportMode());
+                } else if (trips.get(i).segments.get(j).transitRouteId != null) {
+                    writePtLineAndModeFromRouteId(trips.get(i).segments.get(j).transitRouteId, this.scenario.getTransitSchedule(), ptLineCell, ptModeCell);
                 }
                 cell = row.createCell(12);
                 cell.setCellValue(trips.get(i).getSegmentAccessTime(j));
@@ -275,6 +280,18 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
         }
     }
 
+    public void writePtLineAndModeFromRouteId(Id<TransitRoute> routeId, TransitSchedule schedule, Cell ptLineCell, Cell ptModeCell) {
+        for(TransitLine transitLine: schedule.getTransitLines().values()) {
+            for(TransitRoute transitRoute : transitLine.getRoutes().values()){
+                if(transitRoute.getId().equals(routeId)) {
+                    ptLineCell.setCellValue(transitLine.getId().toString());
+                    ptModeCell.setCellValue(transitRoute.getTransportMode());
+                    return;
+                }
+            }
+        }
+    }
+
     private void putTransitLineInfoInCell(Id<Vehicle> vehicleId, Cell cell) {
         TransitLine transitLine = this.scenario.getTransitSchedule().getTransitLines().get(this.vehiclesToTransitLines.get(vehicleId));
         Object gtfsRouteShortName = transitLine.getAttributes().getAttribute("gtfs_route_short_name");
@@ -310,6 +327,18 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
     public void handleEvent(VehicleLeavesTrafficEvent event) {
         if(this.scenario.getTransitVehicles().getVehicles().containsKey(event.getVehicleId())) {
             this.vehiclesToArrivalTimes.put(event.getVehicleId(), event.getTime());
+        }
+    }
+
+    @Override
+    public void handleEvent(GenericEvent genericEvent) {
+        if(!genericEvent.getEventType().equals("pt_transit")) {
+            return;
+        }
+        Id<Person> personId = Id.createPersonId(genericEvent.getAttributes().get("person"));
+        PtTrip.TripSegment segment = this.currentPtTrips.get(personId).getLastSegment();
+        if(segment != null) {
+            segment.transitRouteId = Id.create(genericEvent.getAttributes().get("route"), TransitRoute.class);
         }
     }
 }

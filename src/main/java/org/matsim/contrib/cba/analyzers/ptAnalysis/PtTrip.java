@@ -4,6 +4,7 @@ import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.events.ActivityEndEvent;
 import org.matsim.api.core.v01.events.ActivityStartEvent;
 import org.matsim.api.core.v01.population.Person;
+import org.matsim.pt.transitSchedule.api.TransitRoute;
 import org.matsim.vehicles.Vehicle;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ final class PtTrip {
         final Id<Vehicle> vehicleId;
         double travelTime;
         double distance;
+        Id<TransitRoute> transitRouteId;
         final String mode;
         final double waitingTime;
 
