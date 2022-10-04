@@ -14,10 +14,8 @@ import org.matsim.contrib.cba.utils.Tuple;
 import org.matsim.core.api.experimental.events.TeleportationArrivalEvent;
 import org.matsim.core.api.experimental.events.handler.TeleportationArrivalEventHandler;
 import org.matsim.core.events.MobsimScopeEventHandler;
-import org.matsim.pt.transitSchedule.api.Departure;
-import org.matsim.pt.transitSchedule.api.TransitLine;
-import org.matsim.pt.transitSchedule.api.TransitRoute;
-import org.matsim.pt.transitSchedule.api.TransitSchedule;
+import org.matsim.core.utils.misc.OptionalTime;
+import org.matsim.pt.transitSchedule.api.*;
 import org.matsim.vehicles.Vehicle;
 
 import java.util.*;
@@ -361,6 +359,28 @@ public class PtAnalyzer implements PersonDepartureEventHandler, PersonArrivalEve
         if(segment != null) {
             segment.transitRouteId = Id.create(genericEvent.getAttributes().get("route"), TransitRoute.class);
             segment.vehicleDepartureTime = Double.parseDouble(genericEvent.getAttributes().get("vehicleDepartureTime"));
+            for(TransitLine transitLine: this.scenario.getTransitSchedule().getTransitLines().values()){
+                for(TransitRoute transitRoute: transitLine.getRoutes().values()) {
+                    if(transitRoute.getId().equals(segment.transitRouteId)){
+                        OptionalTime stopDepartureOffset=null;
+                        for(TransitRouteStop transitRouteStop: transitRoute.getStops()) {
+                            if(transitRouteStop.getStopFacility().getId().toString().equals(genericEvent.getAttributes().get("accessStop"))) {
+                                stopDepartureOffset = transitRouteStop.getDepartureOffset();
+                            }
+                        }
+                        if(stopDepartureOffset!=null && stopDepartureOffset.isDefined()) {
+                            for(Departure departure: transitRoute.getDepartures().values()) {
+                                if(departure.getDepartureTime() == segment.vehicleDepartureTime-stopDepartureOffset.seconds()) {
+                                    segment.vehicleId = departure.getVehicleId();
+                                    this.vehiclesToTransitLines.put(segment.vehicleId,transitLine.getId());
+                                    this.vehiclesDistances.put(segment.vehicleId, transitRoute.getRoute().getDistance());
+                                    this.vehiclesToDepartureTimes.put(segment.vehicleId, departure.getDepartureTime());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 final class PtTrip {
     static final class TripSegment {
-        final Id<Vehicle> vehicleId;
+        Id<Vehicle> vehicleId;
         double travelTime;
         double distance;
         Id<TransitRoute> transitRouteId;
