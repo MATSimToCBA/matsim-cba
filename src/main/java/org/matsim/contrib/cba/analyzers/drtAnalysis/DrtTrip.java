@@ -67,8 +67,8 @@ final class DrtTrip {
 		this.waitTime = pickedUpEvent.getTime() - submittedEvent.getTime();
 		this.unsharedDistanceEstimate_m = submittedEvent.getUnsharedRideDistance();
 		this.unsharedTimeEstimate_m = submittedEvent.getUnsharedRideTime();
-		this.arrivalTime = sequence.getDroppedOff().get().getTime();
-		this.fare = sequence.getFare().get().getAmount();
+		this.arrivalTime = sequence.getDroppedOff().isPresent() ? sequence.getDroppedOff().get().getTime() : -1;
+		this.fare = sequence.getFare().isPresent() ? sequence.getFare().get().getAmount() : 0;
 		this.traveledDistance = sequence.getDistance();
 		this.beforeActivityType = sequence.getBeforeActivity().getActType();
 		this.afterActivityType = sequence.getAfterActivity().getActType();
